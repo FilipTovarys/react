@@ -6,8 +6,7 @@ import './index.css';
 import App from './App';
 
 
-const container = document.getElementById('result')
-const root = createRoot(container)
+const root = createRoot(document.getElementById("root"));
 root.render(
     <StrictMode>
         <App />
