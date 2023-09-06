@@ -1,39 +1,33 @@
-import { useState } from "react";
+import { useState } from "react"
+import Book from "./components/Book.js"
 
-function Square({ value, onSquareClick }) {
+export default function App() {
+  
+  const books = [
+    {
+      id: 1,
+      image: "https://www.knihydobrovsky.cz/thumbs/book-list/mod_eshop/produkty/h/harry-potter-a-kamen-mudrcu-9788000061917.jpg.webp",
+      title: "Harry Potter a Kámen mudrců"
+    },
+    {
+      id: 2,
+      image: "https://www.knihydobrovsky.cz/thumbs/book-list/mod_eshop/produkty/333420609/10.jpg.webp",
+      title: "Harry Potter a Tajemná komnata"
+    },
+    {
+      id: 3,
+      image: "https://www.knihydobrovsky.cz/thumbs/book-list/mod_eshop/produkty/h/harry-potter-a-vezen-z-azkabanu-9788000063393.jpg.webp",
+      title: "Harry Potter a Vězeň z Azkabanu"
+    },
+  ]
+
+    console.log(books[0].title)
+
   return (
-    <button className="square" onClick={onSquareClick}>
-      {value}
-      </button>
-  );
-}
-
-export default function Board() {
-  const [squares, setSquares] = useState(Array(9).fill(null));
-
-  function handleClick(i) {
-    const nextSquares = squares.slice();
-    nextSquares[i] = "X";
-    setSquares(nextSquares);
-  }
-
-  return (
-    <>
-      <div className="board-row">
-        <Square value={squares[0]} onSquareClick={handleClick} />
-        <Square value={squares[1]} />
-        <Square value={squares[2]} />
-      </div>
-      <div className="board-row">
-        <Square value={squares[3]} />
-        <Square value={squares[4]} />
-        <Square value={squares[5]} />
-      </div>
-      <div className="board-row">
-        <Square value={squares[6]} />
-        <Square value={squares[7]} />
-        <Square value={squares[8]} />
-      </div>
-    </>
-  );
-}
+    <div>
+      <Book myimage={books[0].image} mytitle={books[0].title}/>
+      <Book myimage={books[1].image} mytitle={books[1].title}/>
+      <Book myimage={books[2].image} mytitle={books[2].title}/>
+    </div>
+  )
+};
