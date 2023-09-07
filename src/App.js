@@ -1,7 +1,6 @@
 import { useState } from "react"
 import Task from "./components/Task.js"
 import "./App.css"
-import DeleteButton from "./components/DeleteButton.js"
 
 
 export default function App() {
@@ -17,11 +16,17 @@ export default function App() {
   return (
     <div className="app">
       <h1>Todo list</h1>
-      {showtasks && <Task description={tasks[0]} />}
-      {showtasks && <Task description={tasks[1]} />}
-      {showtasks && <Task description={tasks[2]} />}
-      {showtasks && <Task description={tasks[3]} />}
-      <button onClick={deleteTasks}>Delete all tasks</button>
+      <div>
+        {showtasks && (
+        <div>
+          {showtasks && <Task description={tasks[0]} />}
+          {showtasks && <Task description={tasks[1]} />}
+          {showtasks && <Task description={tasks[2]} />}
+          {showtasks && <Task description={tasks[3]} />}
+          <button onClick={deleteTasks}>Delete all tasks</button>
+        </div>
+        )}
+      </div>
     </div>
   )
 }

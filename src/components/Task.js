@@ -13,8 +13,8 @@ function Task(props) {
         <div>
             {show && (
             <div className="task">
-                {show && <p>{props.description}</p>}
-                {show && <button onClick={showTask}>Delete task</button>}
+                <p>{props.description}</p>
+                <button onClick={showTask}>Delete task</button>
             </div>)} 
         </div>
     )
