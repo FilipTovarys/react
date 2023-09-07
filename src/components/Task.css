@@ -1,0 +1,15 @@
+.task {
+    display: flex;
+    align-items: center;
+    background-color: rgb(178, 152, 255);
+    height: 60px;
+    border-radius: 30px;
+}
+
+p {
+    display: flex;
+    align-items: center;
+    width: 200px;
+    padding-left: 20px;
+}
+
