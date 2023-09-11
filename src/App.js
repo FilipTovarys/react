@@ -14,15 +14,14 @@ export default function App() {
     setShowtasks(false)
   }
 
-  function handleEnter(event) {
-    if (event.key === "Enter")
-    console.log("entered")
+  function handleInputData(input) {
+    console.log(input)
   }
 
   return (
     <div className="app">
       <h1>Todo list</h1>
-      <Input onKeyDown={handleEnter} />
+      <Input handleInput={handleInputData}/>
       <div>
         {showtasks && (
         <div>

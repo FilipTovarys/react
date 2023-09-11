@@ -1,13 +1,18 @@
 import { useState } from "react"
 
 
-function Input() {
+function Input(props) {
 
     const [inputValue, setInputValue] = useState("")
 
     function handleInput(hovno) {
-        console.log("změněno")
-        setInputValue(hovno.target.value)
+        setInputValue(hovno.target.value);
+    }
+
+    function handleEnter(event) {
+        if (event.key === "Enter") {
+            props.handleInput(inputValue)
+        }
     }
 
     return (
@@ -15,7 +20,8 @@ function Input() {
             <input 
                 type="text" 
                 value={inputValue} 
-                onChange={handleInput} 
+                onChange={handleInput}
+                onKeyDown={handleEnter} 
             />
         </div>
     )
