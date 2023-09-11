@@ -7,8 +7,13 @@ function Task(props) {
 
     function showTask() {
         setShowTask(false)
+        deleteFromTasks()
     }
     
+    function deleteFromTasks() {
+        console.log("teď smazat z pole tasks tento task")
+    }
+
     return (
         <div>
             {show && (

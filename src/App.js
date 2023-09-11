@@ -6,33 +6,37 @@ import Input from "./components/Input.js"
 
 export default function App() {
 
-  let tasks = ["navolit rovzrh", "opravit kolo"]
+  const [tasks , setTasks] = useState([])
 
   const [showtasks, setShowtasks] = useState(true);
 
   function deleteTasks() {
-    setShowtasks(false)
+    setTasks([]);
+  }
+
+  function showSetter(bool) {
+    setShowtasks(bool);
   }
 
   function handleInputData(input) {
-    console.log(input);
-    tasks.push(input);
-    console.log(tasks);
+    console.log("Input value:",input);
+    setTasks([...tasks, input]);
+    console.log("Tasks:", tasks);
   }
 
   return (
     <div className="app">
       <h1>Todo list</h1>
-      <Input handleInput={handleInputData}/>
+      <Input showtask={showSetter} handleInput={handleInputData}/>
       <div>
         {showtasks && (
         <div>
           {tasks.map((onetask, index) => (
             <Task key={index} text={onetask}></Task>
           ))}
-          <button onClick={deleteTasks}>Delete all tasks</button>
         </div>
         )}
+        <button onClick={deleteTasks}>Delete all tasks</button>
       </div>
     </div>
   )

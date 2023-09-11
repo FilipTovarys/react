@@ -5,23 +5,26 @@ function Input(props) {
 
     const [inputValue, setInputValue] = useState("")
 
-    function handleInput(hovno) {
-        setInputValue(hovno.target.value);
+    function handleInput(textvalue) {
+        setInputValue(textvalue.target.value);
     }
 
     function handleEnter(event) {
         if (event.key === "Enter") {
-            props.handleInput(inputValue)
+            props.handleInput(inputValue);
+            props.showtask(true);
+            setInputValue("")
         }
     }
 
     return (
         <div>
             <input 
+                id="input"
                 type="text" 
                 value={inputValue} 
                 onChange={handleInput}
-                onKeyDown={handleEnter} 
+                onKeyDown={handleEnter}
             />
         </div>
     )
