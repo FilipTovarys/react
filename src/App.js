@@ -6,8 +6,8 @@ import Input from "./components/Input.js"
 
 export default function App() {
 
-  const tasks = ["Vynést koš", "Vyklidit myčku", "Naučit se React", "Navolit si rozvrh"]
-  
+  let tasks = ["navolit rovzrh", "opravit kolo"]
+
   const [showtasks, setShowtasks] = useState(true);
 
   function deleteTasks() {
@@ -15,7 +15,9 @@ export default function App() {
   }
 
   function handleInputData(input) {
-    console.log(input)
+    console.log(input);
+    tasks.push(input);
+    console.log(tasks);
   }
 
   return (
@@ -25,10 +27,9 @@ export default function App() {
       <div>
         {showtasks && (
         <div>
-          <Task description={tasks[0]} />
-          <Task description={tasks[1]} />
-          <Task description={tasks[2]} />
-          <Task description={tasks[3]} />
+          {tasks.map((onetask, index) => (
+            <Task key={index} text={onetask}></Task>
+          ))}
           <button onClick={deleteTasks}>Delete all tasks</button>
         </div>
         )}
