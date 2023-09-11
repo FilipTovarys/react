@@ -1,26 +1,17 @@
 import "./Task.css"
-import { useState } from "react"
 
 function Task(props) {
 
-    const [show, setShowTask] = useState(true);
-
-    function showTask() {
-        setShowTask(false)
-        deleteFromTasks()
-    }
-    
-    function deleteFromTasks() {
-        console.log("teď smazat z pole tasks tento task")
+    function deletFromArray() {
+        props.deletetask(props.id)
     }
 
     return (
         <div>
-            {show && (
             <div className="task">
                 <p>{props.text}</p>
-                <button onClick={showTask}>Delete task</button>
-            </div>)} 
+                <button onClick={deletFromArray}>Delete task</button>
+            </div>
         </div>
     )
 }

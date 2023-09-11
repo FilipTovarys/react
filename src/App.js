@@ -1,7 +1,8 @@
-import { useState } from "react"
-import Task from "./components/Task.js"
-import "./App.css"
-import Input from "./components/Input.js"
+import { useState } from "react";
+import { useEffect } from 'react';
+import Task from "./components/Task.js";
+import "./App.css";
+import Input from "./components/Input.js";
 
 
 export default function App() {
@@ -18,10 +19,20 @@ export default function App() {
     setShowtasks(bool);
   }
 
+  function delteTaskFromTasks(index) {
+    let prvek = tasks[index]
+    console.log("Mažu task:", {prvek})
+    const updatedTasks = tasks.filter((_, i) => i !== index);
+    setTasks(updatedTasks);
+  }
+
+  useEffect(() => {
+    console.log("Tasks:", tasks);
+  });
+
   function handleInputData(input) {
     console.log("Input value:",input);
     setTasks([...tasks, input]);
-    console.log("Tasks:", tasks);
   }
 
   return (
@@ -32,11 +43,11 @@ export default function App() {
         {showtasks && (
         <div>
           {tasks.map((onetask, index) => (
-            <Task key={index} text={onetask}></Task>
+            <Task key={index} id={index} text={onetask} deletetask={delteTaskFromTasks}></Task>
           ))}
         </div>
         )}
-        <button onClick={deleteTasks}>Delete all tasks</button>
+        <button onClick={deleteTasks}>Delete all tasks</button> 
       </div>
     </div>
   )
