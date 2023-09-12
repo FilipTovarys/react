@@ -10,13 +10,17 @@ function Task(props) {
     }
 
     function taskIsDone() {
+        console.log(done)
         setDone(!done);
+        props.isCompleted(done)
+        console.log(props.text, "Is done:", done)
     }
 
     return (
+        
         <div>
             <div className="task">
-                <button id="doneButton" onClick={taskIsDone}></button>
+                <input type="checkbox" id="doneButton" onClick={taskIsDone}></input>
                 <p>{props.text}</p>
                 <button onClick={deletFromArray}>Delete task</button>
             </div>
