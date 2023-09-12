@@ -8,18 +8,19 @@ import Input from "./components/Input.js";
 export default function App() {
 
   const [tasks , setTasks] = useState([])
+  const [showTasks, setShowTasks] = useState(true);
+  const tasksLength = tasks.length;
+  let moreThanTwoTasks = tasksLength >= 2;
 
-  const [showtasks, setShowtasks] = useState(true);
-
-  function deleteTasks() {
+  function deleteAllTasks() {
     setTasks([]);
   }
 
   function showSetter(bool) {
-    setShowtasks(bool);
+    setShowTasks(bool);
   }
 
-  function delteTaskFromTasks(index) {
+  function deleteTaskFromTasks(index) {
     let prvek = tasks[index]
     console.log("Mažu task:", {prvek})
     const updatedTasks = tasks.filter((_, i) => i !== index);
@@ -40,14 +41,16 @@ export default function App() {
       <h1>Todo list</h1>
       <Input showtask={showSetter} handleInput={handleInputData}/>
       <div>
-        {showtasks && (
+        {showTasks && (
         <div>
           {tasks.map((onetask, index) => (
-            <Task key={index} id={index} text={onetask} deletetask={delteTaskFromTasks}></Task>
+            <Task key={index} id={index} text={onetask} deletetask={deleteTaskFromTasks}></Task>
           ))}
         </div>
         )}
-        <button onClick={deleteTasks}>Delete all tasks</button> 
+        {moreThanTwoTasks && (
+        <button onClick={deleteAllTasks}>Delete all tasks</button>
+        )}
       </div>
     </div>
   )
