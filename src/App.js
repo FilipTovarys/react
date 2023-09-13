@@ -10,16 +10,18 @@ export default function App() {
 
   const [tasks , setTasks] = useState([])
   const [showOnlyDone, setShowOnlyDone] = useState(true);
-  const [iscompleted, setIscompleted] = useState(true);
+  const [iscompleted, setIscompleted] = useState(false);
   const tasksLength = tasks.length;
+  const [doneFilterButt, setDoneFilterButt] = useState(true)
   let moreThanTwoTasks = tasksLength >= 2;
+  let moreThanOneTask = tasksLength >= 1;
 
   function deleteAllTasks() {
     setTasks([]);
   }
 
   useEffect(() =>
-    console.log("render")
+    console.log("render"),
   )
 
   function deleteTaskFromArray(index) {
@@ -28,21 +30,21 @@ export default function App() {
   }
 
   function handleInputData(input) {
-    const newTask = {text: input, iscompleted: false}
+    const newTask = {text: input, completed: iscompleted}
     setTasks([...tasks, newTask]);
   }
 
   function isDone(isDoneState, index) {
     console.log("Úkol:",{index} , "je dokončený" ,!isDoneState);
-    console.log("Log z line 37, tasks:", tasks)
     setIscompleted(!isDoneState);
     let updatedTasks = [...tasks]
-    updatedTasks[index].iscompleted = iscompleted
-    console.log("Log z line 40, tasks",tasks)
+    updatedTasks[index].completed = !isDoneState;
+    setTasks(updatedTasks)
   }
 
   function completedFilter() {
     setShowOnlyDone(!showOnlyDone)
+    setDoneFilterButt(!doneFilterButt)
     console.log("zobrazuji jen dokončené úkoly:", showOnlyDone)
   }
 
@@ -55,22 +57,27 @@ export default function App() {
           <div>
             {tasks.map((onetask, index) => {
               return (
-                <Task
-                  key={index}
-                  id={index}
-                  text={onetask.text}
-                  deletetask={deleteTaskFromArray}
-                  isCompleted={isDone}
-                ></Task>
+                showOnlyDone || onetask.completed ? (
+                  <Task
+                    key={index}
+                    id={index}
+                    text={onetask.text}
+                    deletetask={deleteTaskFromArray}
+                    isCompleted={isDone}
+                  ></Task>
+                ): null
               );
             })}
           </div>
-        
-        {moreThanTwoTasks && (
-          <button onClick={deleteAllTasks}>Delete all tasks</button>
-        )}
+          <div id="filters">
+            {moreThanTwoTasks && (
+              <button className="filter_button" onClick={deleteAllTasks}>Delete all</button>
+            )}
+            {moreThanOneTask && (
+              <Filters text={doneFilterButt ? "Complete" : "All"} onClick={completedFilter}></Filters>
+            )}
+          </div>
       </div>
-      <Filters onClick={completedFilter}></Filters>
     </div>
   );  
 }
