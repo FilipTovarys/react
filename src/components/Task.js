@@ -21,7 +21,7 @@ function Task(props) {
             <div className="task">
                 <input type="checkbox" name="doneCheckBox" className="doneButton" onClick={taskIsDone}></input>
                 <p>{props.text}</p>
-                <button className="task_delete_button" onClick={deletFromArray}>Delete task</button>
+                <button className="task_delete_button" onClick={deletFromArray}>X</button>
             </div>
         </div>
     )
