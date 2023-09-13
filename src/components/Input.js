@@ -12,7 +12,6 @@ function Input(props) {
     function handleEnter(event) {
         if (event.key === "Enter") {
             props.handleInput(inputValue);
-            props.showtask(true);
             setInputValue("")
         }
     }

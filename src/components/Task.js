@@ -10,10 +10,8 @@ function Task(props) {
     }
 
     function taskIsDone() {
-        console.log(done)
         setDone(!done);
-        props.isCompleted(done)
-        console.log(props.text, "Is done:", done)
+        props.isCompleted(done, props.id)
     }
 
     return (

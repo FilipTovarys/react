@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useEffect } from 'react';
+import { useEffect } from "react";
 import Task from "./components/Task.js";
 import Filters from "./components/Filters.js";
 import "./App.css";
@@ -9,9 +9,8 @@ import Input from "./components/Input.js";
 export default function App() {
 
   const [tasks , setTasks] = useState([])
-  const [showAllTasks, setShowAllTasks] = useState(true);
   const [showOnlyDone, setShowOnlyDone] = useState(true);
-  const [hotovej, setHotovej] = useState(true);
+  const [iscompleted, setIscompleted] = useState(true);
   const tasksLength = tasks.length;
   let moreThanTwoTasks = tasksLength >= 2;
 
@@ -19,27 +18,27 @@ export default function App() {
     setTasks([]);
   }
 
-  function showSetter(bool) {
-    setShowAllTasks(bool);
-  }
+  useEffect(() =>
+    console.log("render")
+  )
 
-  function deleteTaskFromTasks(index) {
+  function deleteTaskFromArray(index) {
     const updatedTasks = tasks.filter((_, i) => i !== index);
     setTasks(updatedTasks);
   }
 
-  useEffect(() => {
-    console.log("Tasks:", tasks);
-  });
-
   function handleInputData(input) {
-    console.log("Input value:",input);
-    setTasks([...tasks, input]);
+    const newTask = {text: input, iscompleted: false}
+    setTasks([...tasks, newTask]);
   }
 
-  function isDone(isDoneState) {
-    console.log("Úkol je dokončený",isDoneState);
-    setHotovej(isDoneState)
+  function isDone(isDoneState, index) {
+    console.log("Úkol:",{index} , "je dokončený" ,!isDoneState);
+    console.log("Log z line 37, tasks:", tasks)
+    setIscompleted(!isDoneState);
+    let updatedTasks = [...tasks]
+    updatedTasks[index].iscompleted = iscompleted
+    console.log("Log z line 40, tasks",tasks)
   }
 
   function completedFilter() {
@@ -47,31 +46,31 @@ export default function App() {
     console.log("zobrazuji jen dokončené úkoly:", showOnlyDone)
   }
 
+  
   return (
     <div className="app">
       <h1>Todo list</h1>
-      <Input showtask={showSetter} handleInput={handleInputData}/>
+      <Input handleInput={handleInputData} />
       <div>
-        {showAllTasks && (
           <div>
-            {tasks.map((onetask, index) => (true ? (
-              onetask.isCompleted && (
-                <Task 
-                  key={index} 
-                  id={index} 
-                  text={onetask} 
-                  deletetask={deleteTaskFromTasks} 
+            {tasks.map((onetask, index) => {
+              return (
+                <Task
+                  key={index}
+                  id={index}
+                  text={onetask.text}
+                  deletetask={deleteTaskFromArray}
                   isCompleted={isDone}
                 ></Task>
-              )
-            ) : (null)))}
+              );
+            })}
           </div>
-        )}
+        
         {moreThanTwoTasks && (
-        <button onClick={deleteAllTasks}>Delete all tasks</button>
+          <button onClick={deleteAllTasks}>Delete all tasks</button>
         )}
       </div>
       <Filters onClick={completedFilter}></Filters>
     </div>
-  )
+  );  
 }
