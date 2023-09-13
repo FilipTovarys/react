@@ -9,11 +9,13 @@
     width: 500px;
 }
 
-p {
+.task_text {
     display: flex;
     align-items: center;
     width: 100%;
     padding-left: 20px;
+    background-color: transparent;
+    border-style: none;
 }
 
 .doneButton {

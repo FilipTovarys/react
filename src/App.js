@@ -11,8 +11,9 @@ export default function App() {
   const [tasks , setTasks] = useState([])
   const [showOnlyDone, setShowOnlyDone] = useState(true);
   const [iscompleted, setIscompleted] = useState(false);
+  const [doneFilterButt, setDoneFilterButt] = useState(true);
+  const [updatedTaskText, setUpdatedTaskText] = ("");
   const tasksLength = tasks.length;
-  const [doneFilterButt, setDoneFilterButt] = useState(true)
   let moreThanTwoTasks = tasksLength >= 2;
   let moreThanOneTask = tasksLength >= 1;
 
@@ -21,7 +22,7 @@ export default function App() {
   }
 
   useEffect(() =>
-    console.log("render"),
+    console.log("render", tasks),
   )
 
   function deleteTaskFromArray(index) {
@@ -34,8 +35,14 @@ export default function App() {
     setTasks([...tasks, newTask]);
   }
 
+  function handleTaskEdit(updated_value, index_of_updated) {
+    console.log("edit handled, value:", updated_value, "index:", index_of_updated);
+    let updatedTasks = [...tasks];
+    updatedTasks[index_of_updated].text = updated_value;
+    setTasks(updatedTasks);
+  }
+
   function isDone(isDoneState, index) {
-    console.log("Úkol:",{index} , "je dokončený" ,!isDoneState);
     setIscompleted(!isDoneState);
     let updatedTasks = [...tasks]
     updatedTasks[index].completed = !isDoneState;
@@ -51,7 +58,7 @@ export default function App() {
   
   return (
     <div className="app">
-      <h1>Todo list</h1>
+      <h1>To-do list</h1>
       <Input handleInput={handleInputData} />
       <div>
           <div>
@@ -63,6 +70,7 @@ export default function App() {
                     id={index}
                     text={onetask.text}
                     deletetask={deleteTaskFromArray}
+                    handleEdit={handleTaskEdit}
                     isCompleted={isDone}
                   ></Task>
                 ): null
