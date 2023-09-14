@@ -10,7 +10,6 @@ export default function App() {
 
   const [tasks , setTasks] = useState([])
   const [showOnlyDone, setShowOnlyDone] = useState(true);
-  const [iscompleted, setIscompleted] = useState(false);
   const [doneFilterButt, setDoneFilterButt] = useState(true);
   const tasksLength = tasks.length;
   let moreThanTwoTasks = tasksLength >= 2;
@@ -30,7 +29,7 @@ export default function App() {
   }
 
   function handleInputData(input) {
-    const newTask = {text: input, completed: iscompleted}
+    const newTask = {text: input, completed: false}
     setTasks([...tasks, newTask]);
   }
 
@@ -41,11 +40,11 @@ export default function App() {
     setTasks(updatedTasks);
   }
 
-  function isDone(isDoneState, index) {
-    setIscompleted(!isDoneState);
-    let updatedTasks = [...tasks]
-    updatedTasks[index].completed = !isDoneState;
-    setTasks(updatedTasks)
+  function isDone(index) {
+    const updatedTasks = [...tasks];
+    const isCompleted = updatedTasks[index].completed;
+    updatedTasks[index].completed = !isCompleted;
+    setTasks(updatedTasks);
   }
 
   function completedFilter() {
