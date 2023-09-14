@@ -46,11 +46,16 @@ export default function App() {
     setTasks(updatedTasks);
   }
 
-  function isDone(index) {
-    const updatedTasks = [...tasks];
-    const isCompleted = updatedTasks[index].completed;
-    updatedTasks[index].completed = !isCompleted;
-    setTasks(updatedTasks);
+  function isDone(doneId, bool) {
+    console.log(doneId)
+    let currentTasks = [...tasks];
+    let updatedTasks = currentTasks.map((oneTask) => {
+      if (oneTask.id === doneId) {
+        return {...oneTask, completed: !bool};
+      }
+      return oneTask;
+    });
+    setTasks(updatedTasks)
   }
 
   function completedFilter() {
@@ -73,6 +78,7 @@ export default function App() {
                     key={onetask.id}
                     id={onetask.id}
                     text={onetask.text}
+                    completed={onetask.completed}
                     deletetask={deleteTaskFromArray}
                     handleEdit={handleTaskEdit}
                     isCompleted={isDone}

@@ -3,7 +3,6 @@ import "./Task.css"
 
 function Task(props) {
 
-    const [done, setDone] = useState("false")
     const [taskText, setTaskText] = useState(props.text)
 
     function deletFromArray() {
@@ -11,8 +10,7 @@ function Task(props) {
     }
 
     function taskIsDone() {
-        setDone(!done);
-        props.isCompleted(props.id)
+        props.isCompleted(props.id, props.completed)
     }
 
     function textChanged(value) {
@@ -28,8 +26,7 @@ function Task(props) {
         <div>
             <div className="task">
                 <input type="checkbox" name="doneCheckBox" className="doneButton" onClick={taskIsDone}></input>
-                <input className="task_text" onChange={textChanged} onBlur={textChangedSendProps} type="text" value={taskText} />
-                <p>{taskText}</p>
+                <input name="task_text" className="task_text" onChange={textChanged} onBlur={textChangedSendProps} type="text" value={taskText} />
                 <button className="task_delete_button" onClick={deletFromArray}>X</button>
             </div>
         </div>
