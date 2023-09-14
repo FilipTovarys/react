@@ -23,14 +23,20 @@ export default function App() {
     console.log("render", tasks)
   )
 
-  function deleteTaskFromArray(index) {
-    const updatedTasks = tasks.filter((_, i) => i !== index);
+  function deleteTaskFromArray(id) {
+    let updatedTasks = [...tasks]
+    console.log("deletet task id:", id)
+    updatedTasks = updatedTasks.filter((task) => task.id !== id)
     setTasks(updatedTasks);
   }
 
   function handleInputData(input) {
-    const newTask = {text: input, completed: false}
-    setTasks([...tasks, newTask]);
+    let id = 0
+    if (tasks.length > 0) {
+      id = tasks[0].id + 1
+    }
+    const newTask = {id: id, text: input, completed: false}
+    setTasks([newTask, ...tasks]);
   }
 
   function handleTaskEdit(updated_value, index_of_updated) {
@@ -60,12 +66,12 @@ export default function App() {
       <Input handleInput={handleInputData} />
       <div>
           <div>
-            {tasks.map((onetask, index) => {
+            {tasks.map((onetask) => {
               return (
                 showOnlyDone || onetask.completed ? (
                   <Task
-                    key={index}
-                    id={index}
+                    key={onetask.id}
+                    id={onetask.id}
                     text={onetask.text}
                     deletetask={deleteTaskFromArray}
                     handleEdit={handleTaskEdit}
