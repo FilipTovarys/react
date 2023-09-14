@@ -19,6 +19,10 @@ function Task(props) {
 
     function textChanged(value) {
         setTaskText(value.target.value)
+    }
+
+    function textChangedComplete() {
+        console.log("piča")
         props.handleEdit(taskText, props.id)
     }
 
@@ -31,7 +35,7 @@ function Task(props) {
         <div>
             <div className="task">
                 <input type="checkbox" name="doneCheckBox" className="doneButton" onClick={taskIsDone}></input>
-                <input className="task_text" onChange={textChanged} type="text" value={taskText} />
+                <input className="task_text" onChange={textChanged} onBlur={textChangedComplete} type="text" value={taskText} />
                 <button className="task_delete_button" onClick={deletFromArray}>X</button>
             </div>
         </div>

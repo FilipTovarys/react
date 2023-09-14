@@ -12,7 +12,6 @@ export default function App() {
   const [showOnlyDone, setShowOnlyDone] = useState(true);
   const [iscompleted, setIscompleted] = useState(false);
   const [doneFilterButt, setDoneFilterButt] = useState(true);
-  const [updatedTaskText, setUpdatedTaskText] = ("");
   const tasksLength = tasks.length;
   let moreThanTwoTasks = tasksLength >= 2;
   let moreThanOneTask = tasksLength >= 1;
@@ -22,7 +21,7 @@ export default function App() {
   }
 
   useEffect(() =>
-    console.log("render", tasks),
+    console.log("render", tasks)
   )
 
   function deleteTaskFromArray(index) {
