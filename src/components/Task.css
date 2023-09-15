@@ -40,3 +40,18 @@
     background-color: rgba(0, 0, 0, 0.101);
 }
 
+.move_button_div {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.move_button {
+    background-color: transparent;
+    border-style: none;
+    margin: 5px;
+    border-radius: 10px;
+}
+ .move_button:hover {
+    background-color: rgb(165, 140, 239);
+ }

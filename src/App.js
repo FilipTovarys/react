@@ -64,6 +64,28 @@ export default function App() {
     console.log("zobrazuji jen dokončené úkoly:", showOnlyDone)
   }
 
+  function moveUp(moveId) {
+    const currentTasks = [...tasks];
+    const movedTaskIndex = currentTasks.findIndex((task) => task.id === moveId);
+    if (movedTaskIndex === -1) {
+      return;
+    }
+    const movedTask = currentTasks.splice(movedTaskIndex, 1)[0];
+    currentTasks.splice(movedTaskIndex - 1, 0, movedTask);
+    setTasks(currentTasks);
+  }
+
+  function moveDown(moveId) {
+    console.log(moveId, "move down")
+    const currentTasks = [...tasks];
+    const movedTaskIndex = currentTasks.findIndex((task) => task.id === moveId);
+    if (movedTaskIndex === -1) {
+      return;
+    }
+    const movedTask = currentTasks.splice(movedTaskIndex, 1)[0];
+    currentTasks.splice(movedTaskIndex + 1, 0, movedTask);
+    setTasks(currentTasks);
+  }
   
   return (
     <div className="app">
@@ -82,6 +104,8 @@ export default function App() {
                     deletetask={deleteTaskFromArray}
                     handleEdit={handleTaskEdit}
                     isCompleted={isDone}
+                    moveTaskUp = {moveUp}
+                    moveTaskDown = {moveDown}
                   ></Task>
                 ): null
               );

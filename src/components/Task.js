@@ -21,12 +21,25 @@ function Task(props) {
         props.handleEdit(taskText, props.id)
     }
 
+    function moveUp() {
+        props.moveTaskUp(props.id)
+    }
+
+    function moveDown() {
+        props.moveTaskDown(props.id)
+    }
+
     return (
         
         <div>
             <div className="task">
                 <input type="checkbox" name="doneCheckBox" className="doneButton" onClick={taskIsDone}></input>
                 <input name="task_text" className="task_text" onChange={textChanged} onBlur={textChangedSendProps} type="text" value={taskText} />
+                
+                <div className="move_button_div">
+                <button className="move_button" onClick={moveUp}>up</button>
+                <button className="move_button" onClick={moveDown}>down</button>
+                </div>
                 <button className="task_delete_button" onClick={deletFromArray}>X</button>
             </div>
         </div>
