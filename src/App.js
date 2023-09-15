@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import Task from "./components/Task.js";
-import Filter from "./components/Filters.js";
 import "./App.css";
 import Input from "./components/Input.js";
 
@@ -114,13 +113,13 @@ export default function App() {
           </div>
           <div id="filters">
             {moreThanTwoTasks && (
-              <Filter className="filter_button" text={"Delete All"} onClick={deleteAllTasks}></Filter>
+              <button className="filter-button" onClick={deleteAllTasks}>Delete all</button>
             )}
             {moreThanOneTask && (
-              <Filter className="filter_button" text={doneFilterButt ? "Complete" : "All"} onClick={completedFilter}></Filter>
+              <button className="filter-button" onClick={completedFilter}>{doneFilterButt ? "Complete" : "All"}</button>
             )}
             {moreThanOneTask && (
-              <Filter className="filter_button" text={"Delete completed tasks"} onClick={deleteDoneTasks}></Filter>
+              <button className="filter-button" onClick={deleteDoneTasks}>Delete completed tasks</button>
             )}
           </div>
       </div>
