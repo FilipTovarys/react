@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import Task from "./components/Task.js";
-import Filters from "./components/Filters.js";
+import Filter from "./components/Filters.js";
 import "./App.css";
 import Input from "./components/Input.js";
 
@@ -25,7 +25,6 @@ export default function App() {
 
   function deleteTaskFromArray(id) {
     let updatedTasks = [...tasks]
-    console.log("deletet task id:", id)
     updatedTasks = updatedTasks.filter((task) => task.id !== id)
     setTasks(updatedTasks);
   }
@@ -40,14 +39,12 @@ export default function App() {
   }
 
   function handleTaskEdit(updated_value, index_of_updated) {
-    console.log("edit handled, value:", updated_value, "index:", index_of_updated);
     let updatedTasks = [...tasks];
     updatedTasks[index_of_updated].text = updated_value;
     setTasks(updatedTasks);
   }
 
   function isDone(doneId, bool) {
-    console.log(doneId)
     let currentTasks = [...tasks];
     let updatedTasks = currentTasks.map((oneTask) => {
       if (oneTask.id === doneId) {
@@ -61,7 +58,6 @@ export default function App() {
   function completedFilter() {
     setShowOnlyDone(!showOnlyDone)
     setDoneFilterButt(!doneFilterButt)
-    console.log("zobrazuji jen dokončené úkoly:", showOnlyDone)
   }
 
   function moveUp(moveId) {
@@ -76,7 +72,6 @@ export default function App() {
   }
 
   function moveDown(moveId) {
-    console.log(moveId, "move down")
     const currentTasks = [...tasks];
     const movedTaskIndex = currentTasks.findIndex((task) => task.id === moveId);
     if (movedTaskIndex === -1) {
@@ -85,6 +80,12 @@ export default function App() {
     const movedTask = currentTasks.splice(movedTaskIndex, 1)[0];
     currentTasks.splice(movedTaskIndex + 1, 0, movedTask);
     setTasks(currentTasks);
+  }
+
+  function deleteDoneTasks() {
+    let currentTasks = [...tasks];
+    let updatedTasks = currentTasks.filter((task) => task.completed === false)
+    setTasks(updatedTasks)
   }
   
   return (
@@ -113,10 +114,13 @@ export default function App() {
           </div>
           <div id="filters">
             {moreThanTwoTasks && (
-              <button className="filter_button" onClick={deleteAllTasks}>Delete all</button>
+              <Filter className="filter_button" text={"Delete All"} onClick={deleteAllTasks}></Filter>
             )}
             {moreThanOneTask && (
-              <Filters text={doneFilterButt ? "Complete" : "All"} onClick={completedFilter}></Filters>
+              <Filter className="filter_button" text={doneFilterButt ? "Complete" : "All"} onClick={completedFilter}></Filter>
+            )}
+            {moreThanOneTask && (
+              <Filter className="filter_button" text={"Delete completed tasks"} onClick={deleteDoneTasks}></Filter>
             )}
           </div>
       </div>
