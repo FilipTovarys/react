@@ -22,27 +22,23 @@ function Task(props) {
     }
 
     function moveUp() {
-        props.moveTaskUp(props.id)
+        props.moveTaskUpOrDown(props.id, - 1)
     }
 
     function moveDown() {
-        props.moveTaskDown(props.id)
+        props.moveTaskUpOrDown(props.id, + 1)
     }
 
     return (
-        
-        <div>
-            <div className="task">
-                <input type="checkbox" name="doneCheckBox" className="doneButton" onClick={taskIsDone}></input>
-                <input name="task_text" className="task_text" onChange={textChanged} onBlur={textChangedSendProps} type="text" value={taskText} />
-                
-                <div className="move_button_div">
+        <div className="task">
+            <input type="checkbox" name="doneCheckBox" className="doneButton" onClick={taskIsDone}></input>
+            <input name="task_text" className="task_text" onChange={textChanged} onBlur={textChangedSendProps} type="text" value={taskText} />
+            <div className="move_button_div">
                 <button className="move_button" onClick={moveUp}>up</button>
                 <button className="move_button" onClick={moveDown}>down</button>
-                </div>
-                <button className="task_delete_button" onClick={deletFromArray}>X</button>
             </div>
-        </div>
+            <button className="task_delete_button" onClick={deletFromArray}>X</button>
+        </div>   
     )
 }
 

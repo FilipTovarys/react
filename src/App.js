@@ -14,6 +14,7 @@ export default function App() {
   const [isAtLeastOneCompleted, setIsAtLeastOneCompleted] = useState(false)
   const tasksLength = tasks.length;
   let moreThanOneTask = tasksLength >= 1;
+  let plusOne = + 1
 
   function deleteAllTasks() {
     setTasks([]);
@@ -72,25 +73,11 @@ export default function App() {
     setDoneFilterButt(!doneFilterButt)
   }
 
-  function moveUp(moveId) {
+  function moveTask(moveId, upOrDown) {
     const currentTasks = [...tasks];
     const movedTaskIndex = currentTasks.findIndex((task) => task.id === moveId);
-    if (movedTaskIndex === -1) {
-      return;
-    }
     const movedTask = currentTasks.splice(movedTaskIndex, 1)[0];
-    currentTasks.splice(movedTaskIndex - 1, 0, movedTask);
-    setTasks(currentTasks);
-  }
-
-  function moveDown(moveId) {
-    const currentTasks = [...tasks];
-    const movedTaskIndex = currentTasks.findIndex((task) => task.id === moveId);
-    if (movedTaskIndex === -1) {
-      return;
-    }
-    const movedTask = currentTasks.splice(movedTaskIndex, 1)[0];
-    currentTasks.splice(movedTaskIndex + 1, 0, movedTask);
+    currentTasks.splice(movedTaskIndex + upOrDown, 0, movedTask);
     setTasks(currentTasks);
   }
 
@@ -130,8 +117,7 @@ export default function App() {
                     deletetask={deleteTaskFromArray}
                     handleEdit={handleTaskEdit}
                     isCompleted={isDone}
-                    moveTaskUp = {moveUp}
-                    moveTaskDown = {moveDown}
+                    moveTaskUpOrDown = {moveTask}
                   ></Task>
                 ): null
               );
