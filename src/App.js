@@ -99,11 +99,24 @@ export default function App() {
     let updatedTasks = currentTasks.filter((task) => task.completed === false)
     setTasks(updatedTasks)
   }
+
+  function sortAb() {
+    let sortedTasks = [...tasks]
+    sortedTasks.sort((a, b) => a.text.localeCompare(b.text))
+    console.log(sortedTasks)
+    setTasks(sortedTasks)
+  }
   
   return (
     <div className="app">
       <h1>To-do list</h1>
       <Input handleInput={handleInputData} />
+      <div>
+        <button className="filter-button" onClick={sortAb}>Sort</button>
+        {moreThanOneTask && (
+          <p>{tasksLeft} Task left</p>
+        )}
+      </div>
       <div>
           <div>
             {tasks.map((onetask) => {
@@ -128,9 +141,6 @@ export default function App() {
               <button className={moreThanOneTask ? "filter-button" : "lifeless-filter-button"} onClick={deleteAllTasks}>Delete all</button>
               <button className={moreThanOneTask ? "filter-button" : "lifeless-filter-button"} onClick={completedFilter}>{doneFilterButt ? "Complete" : "All"}</button>
               <button className={isAtLeastOneCompleted ? "filter-button" : "lifeless-filter-button"} onClick={deleteDoneTasks}>Delete completed tasks</button>
-            {moreThanOneTask && (
-              <p>{tasksLeft} Task left</p>
-            )}
           </div>
       </div>
     </div>
