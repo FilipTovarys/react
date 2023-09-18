@@ -10,8 +10,9 @@ export default function App() {
   const [tasks , setTasks] = useState([])
   const [showOnlyDone, setShowOnlyDone] = useState(true);
   const [doneFilterButt, setDoneFilterButt] = useState(true);
+  const [tasksLeft, setTasksLeft] = useState(0)
+  const [isAtLeastOneCompleted, setIsAtLeastOneCompleted] = useState(false)
   const tasksLength = tasks.length;
-  let moreThanTwoTasks = tasksLength >= 2;
   let moreThanOneTask = tasksLength >= 1;
 
   function deleteAllTasks() {
@@ -19,8 +20,20 @@ export default function App() {
   }
 
   useEffect(() =>
-    console.log("render", tasks)
+    console.log("render", tasks),
   )
+
+  useEffect(() => {
+    let notCompletedTasks = tasks.filter((task) => task.completed === false);
+    let tasksLeft = notCompletedTasks.length;
+    setTasksLeft(tasksLeft);
+
+    let completedTasks = tasks.filter((task) => task.completed === true);
+    let completedTasksCounter = completedTasks.length;
+    completedTasksCounter >= 1 ? 
+      setIsAtLeastOneCompleted(true) : 
+        setIsAtLeastOneCompleted(false)
+  }, [tasks])
 
   function deleteTaskFromArray(id) {
     let updatedTasks = [...tasks]
@@ -112,14 +125,11 @@ export default function App() {
             })}
           </div>
           <div id="filters">
-            {moreThanTwoTasks && (
-              <button className="filter-button" onClick={deleteAllTasks}>Delete all</button>
-            )}
+              <button className={moreThanOneTask ? "filter-button" : "lifeless-filter-button"} onClick={deleteAllTasks}>Delete all</button>
+              <button className={moreThanOneTask ? "filter-button" : "lifeless-filter-button"} onClick={completedFilter}>{doneFilterButt ? "Complete" : "All"}</button>
+              <button className={isAtLeastOneCompleted ? "filter-button" : "lifeless-filter-button"} onClick={deleteDoneTasks}>Delete completed tasks</button>
             {moreThanOneTask && (
-              <button className="filter-button" onClick={completedFilter}>{doneFilterButt ? "Complete" : "All"}</button>
-            )}
-            {moreThanOneTask && (
-              <button className="filter-button" onClick={deleteDoneTasks}>Delete completed tasks</button>
+              <p>{tasksLeft} Task left</p>
             )}
           </div>
       </div>
