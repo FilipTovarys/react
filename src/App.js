@@ -14,7 +14,6 @@ export default function App() {
   const [isAtLeastOneCompleted, setIsAtLeastOneCompleted] = useState(false)
   const tasksLength = tasks.length;
   let moreThanOneTask = tasksLength >= 1;
-  let plusOne = + 1
 
   function deleteAllTasks() {
     setTasks([]);
@@ -37,16 +36,22 @@ export default function App() {
   }, [tasks])
 
   function deleteTaskFromArray(id) {
-    let updatedTasks = [...tasks]
-    updatedTasks = updatedTasks.filter((task) => task.id !== id)
+    let updatedTasks = [...tasks];
+    updatedTasks = updatedTasks.filter((task) => task.id !== id);
     setTasks(updatedTasks);
   }
 
   function handleInputData(input) {
-    let id = 0
-    if (tasks.length > 0) {
-      id = tasks[0].id + 1
-    }
+    let id = 0;
+    if (tasksLength > 0) {
+      let currentTasks = [...tasks];
+      let sortedIds = currentTasks.sort((a, b) => b.id - a.id);
+      console.log("Sorted Ids:", sortedIds);
+      let highestId = sortedIds[0].id;
+      console.log("highest Id:", highestId);
+      id = highestId + 1;
+    } 
+
     const newTask = {id: id, text: input, completed: false}
     setTasks([newTask, ...tasks]);
   }
@@ -90,7 +95,6 @@ export default function App() {
   function sortAb() {
     let sortedTasks = [...tasks]
     sortedTasks.sort((a, b) => a.text.localeCompare(b.text))
-    console.log(sortedTasks)
     setTasks(sortedTasks)
   }
   
@@ -98,10 +102,12 @@ export default function App() {
     <div className="app">
       <h1>To-do list</h1>
       <Input handleInput={handleInputData} />
-      <div>
-        <button className="filter-button" onClick={sortAb}>Sort</button>
+      <div id="under-input">
         {moreThanOneTask && (
-          <p>{tasksLeft} Task left</p>
+          <button className="filter-button" onClick={sortAb}>Sort A-Z</button>
+        )}
+        {moreThanOneTask && (
+          <p>{tasksLeft} task left</p>
         )}
       </div>
       <div>

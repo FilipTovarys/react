@@ -6,6 +6,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-top: 15px;
 }
 
 .filter-button {
@@ -13,20 +14,37 @@
     width: 170px;
     height: 30px;
     margin: 2px;
-    border-style: none;
-}
-
-.filter-button:hover {
     border-style: solid;
     border-width: 1px;
     border-radius: 5px;
+    font-size: 12px;
+}
+
+.filter-button:hover {
+    background-color: black;
+    color: white;
 }
 
 .lifeless-filter-button {
     color: rgb(179, 179, 179);
     background-color: white;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+    border-color: rgb(179, 179, 179);
     width: 170px;
     height: 30px;
     margin: 2px;
-    border-style: none;
+    font-size: 12px;
+}
+
+#under-input {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+#under-input p {
+    font-size: 12px;
+    padding-left: 20px;
 }
