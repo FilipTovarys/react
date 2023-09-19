@@ -13,15 +13,23 @@ export default function App() {
   const [tasksLeft, setTasksLeft] = useState(0)
   const [isAtLeastOneCompleted, setIsAtLeastOneCompleted] = useState(false)
   const tasksLength = tasks.length;
-  let moreThanOneTask = tasksLength >= 1;
+  const moreThanOneTask = tasksLength >= 1;
+
+  const storedTasksJSON = localStorage.getItem("tasks");
+  if (storedTasksJSON === null || storedTasksJSON === "[]") {
+    console.log("empty local storage")
+  } else {
+    console.log("stored (21):", storedTasksJSON)
+  }
+  
 
   function deleteAllTasks() {
     setTasks([]);
   }
 
-  useEffect(() =>
-    console.log("render", tasks),
-  )
+  useEffect(() => {
+    console.log("render", tasks);
+  })
 
   useEffect(() => {
     let notCompletedTasks = tasks.filter((task) => task.completed === false);
@@ -33,6 +41,9 @@ export default function App() {
     completedTasksCounter >= 1 ? 
       setIsAtLeastOneCompleted(true) : 
         setIsAtLeastOneCompleted(false)
+
+    let tasksJSON = JSON.stringify(tasks)
+    localStorage.setItem("tasks", tasksJSON)
   }, [tasks])
 
   function deleteTaskFromArray(id) {

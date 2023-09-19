@@ -25,6 +25,7 @@ function Input(props) {
                 value={inputValue} 
                 onChange={handleInput}
                 onKeyDown={handleEnter}
+                placeholder="Add task"
             />
         </div>
     )
