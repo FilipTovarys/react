@@ -7,7 +7,7 @@ import Input from "./components/Input.js";
 
 export default function App() {
 
-  const [tasks , setTasks] = useState([])
+  const [tasks , setTasks] = useState(getTasksFromLS)
   const [showOnlyDone, setShowOnlyDone] = useState(true);
   const [doneFilterButt, setDoneFilterButt] = useState(true);
   const [tasksLeft, setTasksLeft] = useState(0)
@@ -15,13 +15,17 @@ export default function App() {
   const tasksLength = tasks.length;
   const moreThanOneTask = tasksLength >= 1;
 
-  const storedTasksJSON = localStorage.getItem("tasks");
-  if (storedTasksJSON === null || storedTasksJSON === "[]") {
-    console.log("empty local storage")
-  } else {
-    console.log("stored (21):", storedTasksJSON)
+  function getTasksFromLS() {
+    let storedTasksJSON = localStorage.getItem("tasks")
+    if (storedTasksJSON === null || storedTasksJSON === "[]" || storedTasksJSON === "") {
+      console.log("Empty tasks in localStorage")
+      return []
+    } else {
+      console.log(storedTasksJSON)
+      let storedTasks = JSON.parse(storedTasksJSON)
+      return storedTasks
+    }
   }
-  
 
   function deleteAllTasks() {
     setTasks([]);
@@ -62,7 +66,6 @@ export default function App() {
       console.log("highest Id:", highestId);
       id = highestId + 1;
     } 
-
     const newTask = {id: id, text: input, completed: false}
     setTasks([newTask, ...tasks]);
   }
