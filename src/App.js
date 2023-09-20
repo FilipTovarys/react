@@ -17,7 +17,7 @@ export default function App() {
 
   function getTasksFromLS() {
     let storedTasksJSON = localStorage.getItem("tasks")
-    if (storedTasksJSON === null || storedTasksJSON === "[]" || storedTasksJSON === "") {
+    if (storedTasksJSON === null) {
       console.log("Empty tasks in localStorage")
       return []
     } else {
