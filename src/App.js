@@ -114,7 +114,7 @@ export default function App() {
   
   return (
     <div className="app">
-      <h1>To-do list</h1>
+      <h1 className="text-3xl font-bold underline">To-do list</h1>
       <Input handleInput={handleInputData} />
       <div id="under-input">
         {moreThanOneTask && (
