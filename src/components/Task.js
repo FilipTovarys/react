@@ -31,8 +31,21 @@ function Task(props) {
 
     return (
         <div className="task">
-            <input type="checkbox" name="doneCheckBox" className="doneButton" onClick={taskIsDone}></input>
-            <input name="task_text" className="task_text" onChange={textChanged} onBlur={textChangedSendProps} type="text" value={taskText} />
+            <input 
+                type="checkbox" 
+                name="doneCheckBox" 
+                className="doneButton" 
+                checked={props.completed} 
+                onChange={taskIsDone}>
+            </input>
+            <input 
+                name="task_text" 
+                className="task_text" 
+                onChange={textChanged} 
+                onBlur={textChangedSendProps} 
+                type="text" 
+                value={taskText}>
+            </input> 
             <div className="move_button_div">
                 <button className="move_button" onClick={moveUp}>up</button>
                 <button className="move_button" onClick={moveDown}>down</button>
