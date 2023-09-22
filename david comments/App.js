@@ -191,8 +191,6 @@ export default function App() {
                     handleEdit={handleTaskEdit}
                     isCompleted={isDone}
                     moveTaskUpOrDown = {moveTask}
-                    createdAt={onetask.createdAt}
-                    deletedAt={onetask.deletedAt}
                   ></Task>
                 ): null
               );

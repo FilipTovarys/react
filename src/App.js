@@ -92,14 +92,6 @@ export default function App() {
     setDoneFilterButt(!doneFilterButt)
   }
 
-  function moveTask(moveId, upOrDown) {
-    const currentTasks = [...tasks];
-    const movedTaskIndex = currentTasks.findIndex((task) => task.id === moveId);
-    const movedTask = currentTasks.splice(movedTaskIndex, 1)[0];
-    currentTasks.splice(movedTaskIndex + upOrDown, 0, movedTask);
-    setTasks(currentTasks);
-  }
-
   function deleteDoneTasks() {
     let currentTasks = [...tasks];
     let updatedTasks = currentTasks.filter((task) => task.completed === false)
@@ -131,13 +123,10 @@ export default function App() {
                 showOnlyDone || onetask.completed ? (
                   <Task
                     key={onetask.id}
-                    id={onetask.id}
-                    text={onetask.text}
-                    completed={onetask.completed}
+                    task={onetask}
                     deletetask={deleteTaskFromArray}
                     handleEdit={handleTaskEdit}
                     isCompleted={isDone}
-                    moveTaskUpOrDown = {moveTask}
                   ></Task>
                 ): null
               );

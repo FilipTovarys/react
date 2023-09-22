@@ -3,54 +3,40 @@ import "./Task.css"
 
 function Task(props) {
 
-    const [taskText, setTaskText] = useState(props.text)
+    const {task} = props
 
-    function deletFromArray() {
-        props.deletetask(props.id)
+    const {text, id, completed} = task
+
+
+    const onUpdate = (event) => {
+        const name = event.target.name
+        console.log("Update:", name,"id:", id)
+
     }
 
-    function taskIsDone() {
-        props.isCompleted(props.id, props.completed)
-    }
-
-    function textChanged(value) {
-        setTaskText(value.target.value)
-    }
-
-    function textChangedSendProps() {
-        props.handleEdit(taskText, props.id)
-    }
-
-    function moveUp() {
-        props.moveTaskUpOrDown(props.id, - 1)
-    }
-
-    function moveDown() {
-        props.moveTaskUpOrDown(props.id, + 1)
-    }
 
     return (
         <div className="task">
             <input 
                 type="checkbox" 
-                name="doneCheckBox" 
+                name="completed" 
                 className="doneButton" 
-                checked={props.completed} 
-                onChange={taskIsDone}>
+                checked={completed} 
+                onChange={onUpdate}>
             </input>
             <input 
-                name="task_text" 
+                name="overwrite"
                 className="task_text" 
-                onChange={textChanged} 
-                onBlur={textChangedSendProps} 
+                onChange={onUpdate} 
+                onBlur={onUpdate} 
                 type="text" 
-                value={taskText}>
+                value={text}>
             </input> 
             <div className="move_button_div">
-                <button className="move_button" onClick={moveUp}>up</button>
-                <button className="move_button" onClick={moveDown}>down</button>
+                <button name="up" className="move_button" onClick={onUpdate}>up</button>
+                <button name="down" className="move_button" onClick={onUpdate}>down</button>
             </div>
-            <button className="task_delete_button" onClick={deletFromArray}>X</button>
+            <button name="delete" className="task_delete_button" onClick={onUpdate}>X</button>
         </div>   
     )
 }
