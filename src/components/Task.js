@@ -1,34 +1,34 @@
-import { useState } from "react"
 import "./Task.css"
 
 function Task(props) {
 
-    const {task} = props
+    const {task, onUpdate, onDelete} = props
 
     const {text, id, completed} = task
 
 
-    const onUpdate = (event) => {
-        const name = event.target.name
-        console.log("Update:", name,"id:", id)
-
+    function handleUpdate(updatedTask) {
+        onUpdate(updatedTask);
     }
 
+    function handleDelete(deleteId) {
+        onDelete(id);
+    }
 
     return (
         <div className="task">
             <input 
                 type="checkbox" 
-                name="completed" 
+                name="checkbox" 
                 className="doneButton" 
                 checked={completed} 
-                onChange={onUpdate}>
+                onChange={() => handleUpdate({...task, completed: !completed })}>
             </input>
             <input 
                 name="overwrite"
                 className="task_text" 
-                onChange={onUpdate} 
-                onBlur={onUpdate} 
+                onChange={(event) => handleUpdate({ ...task, text: event.target.value })} 
+                onBlur={() => handleUpdate(task)} 
                 type="text" 
                 value={text}>
             </input> 
@@ -36,7 +36,7 @@ function Task(props) {
                 <button name="up" className="move_button" onClick={onUpdate}>up</button>
                 <button name="down" className="move_button" onClick={onUpdate}>down</button>
             </div>
-            <button name="delete" className="task_delete_button" onClick={onUpdate}>X</button>
+            <button name="delete" className="task_delete_button" onClick={handleDelete}>X</button>
         </div>   
     )
 }

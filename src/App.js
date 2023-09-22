@@ -50,42 +50,18 @@ export default function App() {
     localStorage.setItem("tasks", tasksJSON)
   }, [tasks])
 
-  function deleteTaskFromArray(id) {
-    let updatedTasks = [...tasks];
-    updatedTasks = updatedTasks.filter((task) => task.id !== id);
-    setTasks(updatedTasks);
-  }
-
   function handleInputData(input) {
     let id = 0;
     if (tasksLength > 0) {
       let currentTasks = [...tasks];
       let sortedIds = currentTasks.sort((a, b) => b.id - a.id);
-      console.log("Sorted Ids:", sortedIds);
       let highestId = sortedIds[0].id;
-      console.log("highest Id:", highestId);
       id = highestId + 1;
     } 
     const newTask = {id: id, text: input, completed: false}
     setTasks([newTask, ...tasks]);
   }
 
-  function handleTaskEdit(updated_value, index_of_updated) {
-    let updatedTasks = [...tasks];
-    updatedTasks[index_of_updated].text = updated_value;
-    setTasks(updatedTasks);
-  }
-
-  function isDone(doneId, bool) {
-    let currentTasks = [...tasks];
-    let updatedTasks = currentTasks.map((oneTask) => {
-      if (oneTask.id === doneId) {
-        return {...oneTask, completed: !bool};
-      }
-      return oneTask;
-    });
-    setTasks(updatedTasks)
-  }
 
   function completedFilter() {
     setShowOnlyDone(!showOnlyDone)
@@ -102,6 +78,23 @@ export default function App() {
     let sortedTasks = [...tasks]
     sortedTasks.sort((a, b) => a.text.localeCompare(b.text))
     setTasks(sortedTasks)
+  }
+
+  function handleTaskUpdate(updatedTask) {
+    console.log(updatedTask)
+    let updatedTasks = tasks.map((task) => {
+      if (task.id === updatedTask.id) {
+        return updatedTask
+      }
+      return task
+    })
+    setTasks(updatedTasks)
+  }
+
+  function handleTaskDelete(id) {
+    console.log("delete task id:", id);
+    const updatedTask = tasks.filter((task) => task.id !== id);
+    setTasks(updatedTask);
   }
   
   return (
@@ -124,9 +117,8 @@ export default function App() {
                   <Task
                     key={onetask.id}
                     task={onetask}
-                    deletetask={deleteTaskFromArray}
-                    handleEdit={handleTaskEdit}
-                    isCompleted={isDone}
+                    onUpdate={handleTaskUpdate}
+                    onDelete={handleTaskDelete}
                   ></Task>
                 ): null
               );
