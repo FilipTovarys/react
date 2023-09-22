@@ -6,19 +6,19 @@ import Input from "./components/Input.js";
 
 
 export default function App() {
-
   const [tasks , setTasks] = useState(getTasksFromLS)
   const [showOnlyDone, setShowOnlyDone] = useState(true);
   const [doneFilterButt, setDoneFilterButt] = useState(true);
-  const [tasksLeft, setTasksLeft] = useState(0)
-  const [isAtLeastOneCompleted, setIsAtLeastOneCompleted] = useState(false)
+  const tasksLeft = (tasks.filter((task) => task.completed === false)).length
+  const completedTasks = tasks.filter((task) => task.completed === true)
+  const isAtLeastOneCompleted = completedTasks.length > 0
   const tasksLength = tasks.length;
   const moreThanOneTask = tasksLength >= 1;
+
 
   function getTasksFromLS() {
     let storedTasksJSON = localStorage.getItem("tasks")
     if (storedTasksJSON === null) {
-      console.log("Empty tasks in localStorage")
       return []
     } else {
       console.log(storedTasksJSON)
@@ -36,16 +36,6 @@ export default function App() {
   })
 
   useEffect(() => {
-    let notCompletedTasks = tasks.filter((task) => task.completed === false);
-    let tasksLeft = notCompletedTasks.length;
-    setTasksLeft(tasksLeft);
-
-    let completedTasks = tasks.filter((task) => task.completed === true);
-    let completedTasksCounter = completedTasks.length;
-    completedTasksCounter >= 1 ? 
-      setIsAtLeastOneCompleted(true) : 
-        setIsAtLeastOneCompleted(false)
-
     let tasksJSON = JSON.stringify(tasks)
     localStorage.setItem("tasks", tasksJSON)
   }, [tasks])
@@ -69,8 +59,7 @@ export default function App() {
   }
 
   function deleteDoneTasks() {
-    let currentTasks = [...tasks];
-    let updatedTasks = currentTasks.filter((task) => task.completed === false)
+    let updatedTasks = tasks.filter((task) => task.completed === false)
     setTasks(updatedTasks)
   }
 
@@ -92,7 +81,6 @@ export default function App() {
   }
 
   function handleTaskDelete(id) {
-    console.log("delete task id:", id);
     const updatedTask = tasks.filter((task) => task.id !== id);
     setTasks(updatedTask);
   }

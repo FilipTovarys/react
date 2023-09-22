@@ -1,9 +1,7 @@
 import "./Task.css"
 
 function Task(props) {
-
     const {task, onUpdate, onDelete} = props
-
     const {text, id, completed} = task
 
 
