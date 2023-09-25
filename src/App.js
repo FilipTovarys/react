@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import Task from "./components/Task.js";
 import "./App.css";
 import Input from "./components/Input.js";
+import getTasksFromLS from "./components/localStorage.js";
 
 
 export default function App() {
@@ -15,17 +16,6 @@ export default function App() {
   const tasksLength = tasks.length;
   const moreThanOneTask = tasksLength >= 1;
 
-
-  function getTasksFromLS() {
-    let storedTasksJSON = localStorage.getItem("tasks")
-    if (storedTasksJSON === null) {
-      return []
-    } else {
-      console.log(storedTasksJSON)
-      let storedTasks = JSON.parse(storedTasksJSON)
-      return storedTasks
-    }
-  }
 
   function deleteAllTasks() {
     setTasks([]);
