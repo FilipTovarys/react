@@ -47,12 +47,6 @@ export default function App() {
     setTasks(updatedTasks)
   }
 
-  function sortAb() {
-    let sortedTasks = [...tasks]
-    sortedTasks.sort((a, b) => a.text.localeCompare(b.text))
-    setTasks(sortedTasks)
-  }
-
   function handleTaskUpdate(updatedTask) {
     let updatedTasks = tasks.map((task) => {
       if (task.id === updatedTask.id) {
@@ -73,9 +67,6 @@ export default function App() {
       <h1 className="text-3xl font-bold underline">To-do list</h1>
       <Input passInput={handleInputData} />
       <div id="under-input">
-        {moreThanOneTask && (
-          <button className="filter-button" onClick={sortAb}>Sort A-Z</button>
-        )}
         {moreThanOneTask && (
           <p>{tasksLeft} task left</p>
         )}

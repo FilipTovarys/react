@@ -4,8 +4,6 @@ import "./Input.css"
 
 function Input(props) {
     const {passInput} = props;
-    console.log("input component rendered")
-
 
     const handleEnter = useCallback(
         (event) => {
