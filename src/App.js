@@ -37,7 +37,6 @@ export default function App() {
     setTasks([newTask, ...tasks]);
   }
 
-
   function completedFilter() {
     setShowOnlyDone(!showOnlyDone)
     setDoneFilterButt(!doneFilterButt)
