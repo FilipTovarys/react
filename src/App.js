@@ -3,11 +3,11 @@ import { useEffect } from "react";
 import Task from "./components/Task.js";
 import "./App.css";
 import Input from "./components/Input.js";
-import getTasksFromLS from "./components/localStorage.js";
+import useLocalStorage from "./components/useLocalStorage.js";
 
 
 export default function App() {
-  const [tasks , setTasks] = useState(getTasksFromLS)
+  const [tasks , setTasks] = useLocalStorage("tasks", [])
   const [showOnlyDone, setShowOnlyDone] = useState(true);
   const [doneFilterButt, setDoneFilterButt] = useState(true);
   const tasksLeft = (tasks.filter((task) => task.completed === false)).length
@@ -24,11 +24,6 @@ export default function App() {
   useEffect(() => {
     console.log("render", tasks);
   })
-
-  useEffect(() => {
-    let tasksJSON = JSON.stringify(tasks)
-    localStorage.setItem("tasks", tasksJSON)
-  }, [tasks])
 
   function handleInputData(input) {
     let id = 0;
@@ -60,7 +55,6 @@ export default function App() {
   }
 
   function handleTaskUpdate(updatedTask) {
-    console.log(updatedTask)
     let updatedTasks = tasks.map((task) => {
       if (task.id === updatedTask.id) {
         return updatedTask
