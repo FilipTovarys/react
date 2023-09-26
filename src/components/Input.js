@@ -4,6 +4,7 @@ import { useState } from "react"
 
 function Input(props) {
 
+    const {passInput} = props
     const [inputValue, setInputValue] = useState("")
 
     function handleInput(textvalue) {
@@ -12,7 +13,7 @@ function Input(props) {
 
     function handleEnter(event) {
         if (event.key === "Enter") {
-            props.handleInput(inputValue);
+            passInput(inputValue);
             setInputValue("")
         }
     }

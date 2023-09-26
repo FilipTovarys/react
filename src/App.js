@@ -71,7 +71,7 @@ export default function App() {
   return (
     <div className="app">
       <h1 className="text-3xl font-bold underline">To-do list</h1>
-      <Input handleInput={handleInputData} />
+      <Input passInput={handleInputData} />
       <div id="under-input">
         {moreThanOneTask && (
           <button className="filter-button" onClick={sortAb}>Sort A-Z</button>
