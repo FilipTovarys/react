@@ -1,30 +1,28 @@
+import { useCallback } from "react";
 import "./Input.css"
-import { useState } from "react"
 
 
 function Input(props) {
+    const {passInput} = props;
+    console.log("input component rendered")
 
-    const {passInput} = props
-    const [inputValue, setInputValue] = useState("")
 
-    function handleInput(textvalue) {
-        setInputValue(textvalue.target.value);
-    }
-
-    function handleEnter(event) {
-        if (event.key === "Enter") {
-            passInput(inputValue);
-            setInputValue("")
-        }
-    }
+    const handleEnter = useCallback(
+        (event) => {
+            if (event.key === "Enter") {
+                let inputValue = event.target.value;
+                passInput(inputValue);
+                event.target.value = ""
+            }
+        }, [passInput]
+    )
+        
 
     return (
         <div>
             <input 
                 id="input"
                 type="text" 
-                value={inputValue} 
-                onChange={handleInput}
                 onKeyDown={handleEnter}
                 placeholder="Add task"
             />
