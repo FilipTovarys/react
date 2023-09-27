@@ -1,7 +1,7 @@
 import "./Task.css"
 
 function Task(props) {
-    const {task, onUpdate, onDelete, moveTaskUp} = props
+    const {task, onUpdate, onDelete, move} = props
     const {text, id, completed} = task
 
 
@@ -14,7 +14,11 @@ function Task(props) {
     }
 
     function moveUp(id) {
-        moveTaskUp(id)
+        move(id, "up")
+    }
+
+    function moveDown(id) {
+        move(id, "down")
     }
 
     return (
@@ -36,7 +40,7 @@ function Task(props) {
             </input> 
             <div className="move_button_div">
                 <button name="up" className="move_button" onClick={() => moveUp(id)}>up</button>
-                <button name="down" className="move_button" onClick={onUpdate}>down</button>
+                <button name="down" className="move_button" onClick={() => moveDown(id)}>down</button>
             </div>
             <button name="delete" className="task_delete_button" onClick={handleDelete}>X</button>
         </div>   

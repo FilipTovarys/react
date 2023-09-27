@@ -63,11 +63,12 @@ export default function App() {
   }
   
 
-  function moveUp(id) {
+  function moveTask(id, direction) {
+    console.log("moooove")
     const updatedTask = [...tasks];
     const taskIndex = updatedTask.findIndex((task) => task.id === id);
 
-    if (taskIndex > 0) {
+    if (direction === "up" && taskIndex > 0) {
       const movedTask = updatedTask[taskIndex];
       const taskAbove = updatedTask[taskIndex - 1];
 
@@ -77,9 +78,18 @@ export default function App() {
 
       updatedTask.sort((a, b) => a.order - b.order);
 
-      setTasks(updatedTask);
+    } else if (direction === "down" && taskIndex < tasksLength - 1) {
+      const movedTask = updatedTask[taskIndex];
+      const taskBelow = updatedTask[taskIndex + 1];
+
+      const movedTaskOrder = movedTask.order;
+      movedTask.order = taskBelow.order;
+      taskBelow.order = movedTaskOrder;
+
+      updatedTask.sort((a, b) => a.order - b.order);
     }
 
+    setTasks(updatedTask)
   }
 
 
@@ -102,7 +112,7 @@ export default function App() {
                     task={onetask}
                     onUpdate={handleTaskUpdate}
                     onDelete={handleTaskDelete}
-                    moveTaskUp={moveUp}
+                    move={moveTask}
                   ></Task>
                 ): null
               );
