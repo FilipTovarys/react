@@ -33,7 +33,7 @@ export default function App() {
       let highestId = sortedIds[0].id;
       id = highestId + 1;
     } 
-    const newTask = {id: id, text: input, completed: false}
+    const newTask = {id: id, order: id, text: input, completed: false}
     setTasks([newTask, ...tasks]);
   }
 
@@ -62,6 +62,27 @@ export default function App() {
     setTasks(updatedTask);
   }
   
+
+  function moveUp(id) {
+    const updatedTask = [...tasks];
+    const taskIndex = updatedTask.findIndex((task) => task.id === id);
+
+    if (taskIndex > 0) {
+      const movedTask = updatedTask[taskIndex];
+      const taskAbove = updatedTask[taskIndex - 1];
+
+      const movedTaskOrder = movedTask.order;
+      movedTask.order = taskAbove.order;
+      taskAbove.order = movedTaskOrder;
+
+      updatedTask.sort((a, b) => a.order - b.order);
+
+      setTasks(updatedTask);
+    }
+
+  }
+
+
   return (
     <div className="app">
       <h1 className="text-3xl font-bold underline">To-do list</h1>
@@ -81,6 +102,7 @@ export default function App() {
                     task={onetask}
                     onUpdate={handleTaskUpdate}
                     onDelete={handleTaskDelete}
+                    moveTaskUp={moveUp}
                   ></Task>
                 ): null
               );
