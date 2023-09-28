@@ -5,6 +5,7 @@ import "./App.css";
 import Input from "./components/Input.js";
 import useLocalStorage from "./components/useLocalStorage.js";
 
+const getNextId = makeCounter()
 
 export default function App() {
   const [tasks , setTasks] = useLocalStorage("tasks", [])
@@ -25,16 +26,10 @@ export default function App() {
     console.log("render", tasks);
   })
 
-  function handleInputData(input) {
-    let id = 0;
-    if (tasksLength > 0) {
-      let currentTasks = [...tasks];
-      let sortedIds = currentTasks.sort((a, b) => b.id - a.id);
-      let highestId = sortedIds[0].id;
-      id = highestId + 1;
-    } 
-    const newTask = {id: id, order: id, text: input, completed: false}
-    setTasks([newTask, ...tasks]);
+  function handleCreateTask(input) {
+    const newTask = {id: getNextId(), order: 0, text: input, completed: false}
+    const updatedTask = [newTask, ...tasks].map((task, i) => ({...task, order: i}))
+    setTasks(updatedTask);
   }
 
   function completedFilter() {
@@ -96,7 +91,7 @@ export default function App() {
   return (
     <div className="app">
       <h1 className="text-3xl font-bold underline">To-do list</h1>
-      <Input passInput={handleInputData} />
+      <Input passInput={handleCreateTask} />
       <div id="under-input">
         {moreThanOneTask && (
           <p>{tasksLeft} task left</p>
@@ -126,4 +121,10 @@ export default function App() {
       </div>
     </div>
   );  
+}
+
+function makeCounter() {
+  let count = 0
+  return () => {count ++
+    return count}
 }

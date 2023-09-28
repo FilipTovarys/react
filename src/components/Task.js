@@ -5,22 +5,6 @@ function Task(props) {
     const {text, id, completed} = task
 
 
-    function handleUpdate(updatedTask) {
-        onUpdate(updatedTask);
-    }
-
-    function handleDelete(deleteId) {
-        onDelete(id);
-    }
-
-    function moveUp(id) {
-        move(id, "up")
-    }
-
-    function moveDown(id) {
-        move(id, "down")
-    }
-
     return (
         <div className="task">
             <input 
@@ -28,21 +12,20 @@ function Task(props) {
                 name="checkbox" 
                 className="doneButton" 
                 checked={completed} 
-                onChange={() => handleUpdate({...task, completed: !completed })}>
+                onChange={() => onUpdate({...task, completed: !completed })}>
             </input>
             <input 
                 name="overwrite"
                 className="task_text" 
-                onChange={(event) => handleUpdate({ ...task, text: event.target.value })} 
-                onBlur={() => handleUpdate(task)} 
+                onChange={(event) => onUpdate({...task, text: event.target.value })} 
                 type="text" 
                 value={text}>
             </input> 
             <div className="move_button_div">
-                <button name="up" className="move_button" onClick={() => moveUp(id)}>up</button>
-                <button name="down" className="move_button" onClick={() => moveDown(id)}>down</button>
+                <button name="up" className="move_button" onClick={() => move(id, "up")}>up</button>
+                <button name="down" className="move_button" onClick={() => move(id, "down")}>down</button>
             </div>
-            <button name="delete" className="task_delete_button" onClick={handleDelete}>X</button>
+            <button name="delete" className="task_delete_button" onClick={() => onDelete(id)}>X</button>
         </div>   
     )
 }
