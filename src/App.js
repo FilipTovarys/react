@@ -64,12 +64,9 @@ export default function App() {
     if (direction === "up" && movedTaskIndex === 0) {
       return;
     }
-
     if (direction === "down" && movedTaskIndex === tasksLength - 1) {
       return;
     }
-
-    console.log("move")
 
     const directionNum = (direction === "up" ? -1 : +1);
     
