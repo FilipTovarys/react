@@ -59,31 +59,29 @@ export default function App() {
   
 
   function moveTask(id, direction) {
-    console.log("moooove")
-    const updatedTask = [...tasks];
-    const taskIndex = updatedTask.findIndex((task) => task.id === id);
+    const movedTaskIndex = tasks.findIndex((task) => task.id === id);
 
-    if (direction === "up" && taskIndex > 0) {
-      const movedTask = updatedTask[taskIndex];
-      const taskAbove = updatedTask[taskIndex - 1];
-
-      const movedTaskOrder = movedTask.order;
-      movedTask.order = taskAbove.order;
-      taskAbove.order = movedTaskOrder;
-
-      updatedTask.sort((a, b) => a.order - b.order);
-
-    } else if (direction === "down" && taskIndex < tasksLength - 1) {
-      const movedTask = updatedTask[taskIndex];
-      const taskBelow = updatedTask[taskIndex + 1];
-
-      const movedTaskOrder = movedTask.order;
-      movedTask.order = taskBelow.order;
-      taskBelow.order = movedTaskOrder;
-
-      updatedTask.sort((a, b) => a.order - b.order);
+    if (direction === "up" && movedTaskIndex === 0) {
+      return;
     }
 
+    if (direction === "down" && movedTaskIndex === tasksLength - 1) {
+      return;
+    }
+
+    console.log("move")
+
+    const directionNum = (direction === "up" ? -1 : +1);
+    
+    let updatedTask = tasks.map((task, i) => {
+      if (i === movedTaskIndex) {
+        return {...task, order: task.order + directionNum}
+      } else if (i === (movedTaskIndex + directionNum))  {
+        return {...task, order: task.order + (directionNum * (-1))}
+      }
+      return task;
+    })
+    
     setTasks(updatedTask)
   }
 
@@ -99,7 +97,9 @@ export default function App() {
       </div>
       <div>
           <div>
-            {tasks.map((onetask) => {
+            {tasks
+            .sort((a, b) => a.order - b.order)
+            .map((onetask) => {
               return (
                 showOnlyDone || onetask.completed ? (
                   <Task
