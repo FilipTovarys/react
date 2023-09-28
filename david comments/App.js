@@ -3,62 +3,23 @@ import { useEffect } from "react";
 import Task from "./components/Task.js";
 import "./App.css";
 import Input from "./components/Input.js";
-
-/**
- * Try to compute as many values as possible (try avoid using `useState` as much as possible) (calculating isAtLeastOneCompleted instead of tracking using `useState`)
- * Task component API simplifcation (accepts the whole task object and updates it using a single method)
- *   DRY (Don't Repat Yourself) and SRP (Single Responsibility Principle)
- * Create a custom `useStorage` hook that exposes the persisted state and a method to update it
- */
-
-function makeCounter() {
-  let count = 0;
-  return () => {
-    return `${count++}{Math.random().toString()}`;
-  }
-}
-
-const getNextId = makeCounter();
-// getNextId(); // 0
-// getNextId(); // 1
-// getNextId(); // 2
+import useLocalStorage from "./components/useLocalStorage.js";
 
 
-// class Counter {
-//   count = 0;
-//   getNextId() {
-//     return this.count++;
-//   }
-// }
-
-// const counter = new Counter();
-// counter.getNextId(); // 0
+const getNextId = makeCounter()
 
 export default function App() {
+  // const [tasks, reorderTask, deleteTask] = useTasks();
 
-  // const [persistedState, persist] = useStorage("tasks", [])
-
-  const [tasks , setTasks] = useState(getTasksFromLS)
+  const [tasks , setTasks] = useLocalStorage("tasks", [])
   const [showOnlyDone, setShowOnlyDone] = useState(true);
   const [doneFilterButt, setDoneFilterButt] = useState(true);
-  const [tasksLeft, setTasksLeft] = useState(0)
-  // const [isAtLeastOneCompleted, setIsAtLeastOneCompleted] = useState(false)
+  const tasksLeft = (tasks.filter((task) => task.completed === false)).length
+  const completedTasks = tasks.filter((task) => task.completed === true)
+  const isAtLeastOneCompleted = completedTasks.length > 0
   const tasksLength = tasks.length;
   const moreThanOneTask = tasksLength >= 1;
-  const completedTasks = tasks.filter((task) => task.completed === true);
-  const isAtLeastOneCompleted = completedTasks.length >= 1;
 
-  function getTasksFromLS() {
-    let storedTasksJSON = localStorage.getItem("tasks")
-    if (storedTasksJSON === null) {
-      console.log("Empty tasks in localStorage")
-      return []
-    } else {
-      console.log(storedTasksJSON)
-      let storedTasks = JSON.parse(storedTasksJSON)
-      return storedTasks
-    }
-  }
 
   function deleteAllTasks() {
     setTasks([]);
@@ -68,49 +29,17 @@ export default function App() {
     console.log("render", tasks);
   })
 
-  useEffect(() => {
-    let notCompletedTasks = tasks.filter((task) => task.completed === false);
-    let tasksLeft = notCompletedTasks.length;
-    setTasksLeft(tasksLeft);
-
-    // let completedTasks = tasks.filter((task) => task.completed === true);
-    let completedTasksCounter = completedTasks.length;
-    // completedTasksCounter >= 1 ? 
-    //   setIsAtLeastOneCompleted(true) : 
-    //     setIsAtLeastOneCompleted(false) // TODO
-    // setIsAtLeastOneCompleted(completedTasksCounter >= 1)
-
-    let tasksJSON = JSON.stringify(tasks) // TODO
-    localStorage.setItem("tasks", tasksJSON)
-  }, [tasks])
-
-  function deleteTaskFromArray(id) {
-    // let updatedTasks = [...tasks]; // TODO
-    // updatedTasks = tasks.filter((task) => task.id !== id);
-    setTasks(tasks.filter((task) => task.id !== id));
-    // setIsAtLeastOneCompleted(false)
-  }
-
-  function handleInputData(input) {
-    const newTask = {id: getNextId(), text: input, completed: false}
-    setTasks([newTask, ...tasks]);
-  }
-
-  function handleTaskEdit(updated_value, index_of_updated) {
-    let updatedTasks = [...tasks];
-    updatedTasks[index_of_updated].text = updated_value;
+  function handleCreateTask(text) {
+    // let id = 0;
+    // if (tasksLength > 0) {
+    //   let currentTasks = [...tasks];
+    //   let sortedIds = currentTasks.sort((a, b) => b.id - a.id);
+    //   let highestId = sortedIds[0].id;
+    //   id = highestId + 1;
+    // } 
+    const newTask = {id: getNextId(), order: 0, text: text, completed: false}
+    const updatedTasks = [newTask, ...tasks].map((task, i) => ({...task, order: i}))
     setTasks(updatedTasks);
-  }
-
-  function isDone(doneId, bool) {
-    let currentTasks = [...tasks];
-    let updatedTasks = currentTasks.map((oneTask) => {
-      if (oneTask.id === doneId) {
-        return {...oneTask, completed: !bool};
-      }
-      return oneTask;
-    });
-    setTasks(updatedTasks)
   }
 
   function completedFilter() {
@@ -118,83 +47,156 @@ export default function App() {
     setDoneFilterButt(!doneFilterButt)
   }
 
-  function moveTask(moveId, upOrDown) {
-    const currentTasks = [...tasks];
-    const movedTaskIndex = currentTasks.findIndex((task) => task.id === moveId);
-    const movedTask = currentTasks.splice(movedTaskIndex, 1)[0];
-    currentTasks.splice(movedTaskIndex + upOrDown, 0, movedTask);
-    setTasks(currentTasks);
-    // TODO: Implement re-ordering using task.order
-  }
-
-  /**
-  const tasks = [{
-    id: 1,
-    text: "Buy milk",
-    order: 1,
-  }, {
-    id: 2,
-    text: "Buy bread",
-    order: 2,
-  }]
- */
-
   function deleteDoneTasks() {
-    let currentTasks = [...tasks];
-    let updatedTasks = currentTasks.filter((task) => task.completed === false)
+    let updatedTasks = tasks.filter((task) => task.completed === false)
     setTasks(updatedTasks)
   }
 
-  function sortAb() {
-    let sortedTasks = [...tasks]
-    sortedTasks.sort((a, b) => a.text.localeCompare(b.text))
-    setTasks(sortedTasks)
+  function handleTaskUpdate(updatedTask) {
+    let updatedTasks = tasks.map((task) => {
+      if (task.id === updatedTask.id) {
+        return updatedTask
+      }
+      return task
+    })
+    setTasks(updatedTasks)
+  }
+
+  function handleTaskDelete(id) {
+    const updatedTask = tasks.filter((task) => task.id !== id);
+    setTasks(updatedTask);
   }
   
+
+  /**
+   * @param id {number}
+   * @param direction {number} -1|+1
+   */
+  function moveTask(id, direction) {
+    console.log("moooove")
+    // const updatedTasks = [...tasks];
+    const taskIndex = tasks.findIndex((task) => task.id === id);
+
+    // Fail early "principle" (https://stackoverflow.com/questions/2807241/what-does-the-expression-fail-early-mean-and-when-would-you-want-to-do-so)
+    if (direction === 'down' && taskIndex < tasksLength - 1) {
+      return;
+    }
+    if (direction === 'up' && taskIndex < 0) {
+      return;
+    }
+
+    const directionNumber = direction === 'up' ? -1 : 1;
+
+      const movedTask = tasks[taskIndex];
+      const taskAbove = tasks[taskIndex + directionNumber];
+
+      console.log({movedTask, taskAbove, direction})
+
+      const updatedTasks = tasks.map(task => {
+        console.log('task', task)
+        if (task.id === movedTask.id) {
+          return {...task, order: taskAbove.order}
+        }
+        if (task.id === taskAbove.id) {
+          return {...task, order: movedTask.order}
+        }
+        return task
+      })
+
+      // On immutability: https://www.digitalocean.com/community/tutorials/js-mutability
+      const arr = [{foo: 'bar'}, {foo: 'baz'}]
+      function mutatingArrayInPlaceByReference() {
+        const bar = arr[0]
+
+        // more code
+        // more code
+        // more code
+        // more code
+        // more code
+        // more code
+
+        bar.foo = 'foobar'
+
+        return arr;
+      }
+      function iteratingAndReturningCompletelyNewArray() {
+        return arr.map((obj, i) => {
+          if (i === 0) {
+            return {...obj, foo: 'foobar'}
+          }
+          return obj
+        })
+      }
+
+      const updatedTask = []
+      const movedTaskOrder = movedTask.order;
+      movedTask.order = taskAbove.order;
+      taskAbove.order = movedTaskOrder;
+
+      // updatedTasks.sort((a, b) => a.order - b.order);
+
+    // if (direction === "up" && taskIndex > 0) {
+    //   const movedTask = updatedTask[taskIndex];
+    //   const taskAbove = updatedTask[taskIndex + direction];
+
+    //   const movedTaskOrder = movedTask.order;
+    //   movedTask.order = taskAbove.order;
+    //   taskAbove.order = movedTaskOrder;
+
+    //   updatedTask.sort((a, b) => a.order - b.order);
+
+    // } else if (direction === "down" && taskIndex < tasksLength - 1) {
+    //   const movedTask = updatedTask[taskIndex];
+    //   const taskBelow = updatedTask[taskIndex + 1];
+
+    //   const movedTaskOrder = movedTask.order;
+    //   movedTask.order = taskBelow.order;
+    //   taskBelow.order = movedTaskOrder;
+
+    //   updatedTask.sort((a, b) => a.order - b.order);
+    // }
+
+    setTasks(updatedTasks)
+  }
+
+
   return (
     <div className="app">
       <h1 className="text-3xl font-bold underline">To-do list</h1>
-      <Input handleInput={handleInputData} />
+      <Input passInput={handleCreateTask} />
       <div id="under-input">
-        {moreThanOneTask && (
-          <button className="filter-button" onClick={sortAb}>Sort A-Z</button>
-        )}
         {moreThanOneTask && (
           <p>{tasksLeft} task left</p>
         )}
       </div>
       <div>
           <div>
-            {/* {tasks
-            .sort()
-            .filter(
-              // Exclude completed, based on user's choice
-            ).map(task => (
-              <Task
-                    key={task.id}
-                    task={task}
-                    onUpdated={(updatedTask) => {}}
-               />
-            ))} */}
-
             {tasks
-            // .sort((a, b) => a.order - b.order)
-            .map((onetask) => {
+            .sort((a, b) => a.order - b.order) // Ordering in a single place only
+            .filter(task => showOnlyDone || onetask.completed) //
+            .map((onetask) => (
+                  <Task
+                    key={onetask.id}
+                    task={onetask}
+                    onUpdate={handleTaskUpdate}
+                    onDelete={handleTaskDelete}
+                    move={moveTask}
+                  ></Task>
+              )
+            )}
+            {/* .map((onetask) => {
               return (
                 showOnlyDone || onetask.completed ? (
                   <Task
                     key={onetask.id}
-                    id={onetask.id}
-                    text={onetask.text}
-                    completed={onetask.completed}
-                    deletetask={deleteTaskFromArray}
-                    handleEdit={handleTaskEdit}
-                    isCompleted={isDone}
-                    moveTaskUpOrDown = {moveTask}
+                    task={onetask}
+                    onUpdate={handleTaskUpdate}
+                    onDelete={handleTaskDelete}
+                    move={moveTask}
                   ></Task>
                 ): null
               );
-            })}
+            })} */}
           </div>
           <div id="filters">
               <button className={moreThanOneTask ? "filter-button" : "lifeless-filter-button"} onClick={deleteAllTasks}>Delete all</button>
@@ -205,3 +207,12 @@ export default function App() {
     </div>
   );  
 }
+
+  function makeCounter() {
+    let count = 0
+    return () => {
+      // count = count ++
+      return count++;  
+    }
+  }
+
