@@ -4,6 +4,7 @@ import Task from "./components/Task.js";
 import "./App.css";
 import Input from "./components/Input.js";
 import useLocalStorage from "./components/useLocalStorage.js";
+import Api from "./components/api.js";
 
 const getNextId = makeCounter()
 
@@ -88,6 +89,7 @@ export default function App() {
       <h1 className="text-3xl font-bold underline">To-do list</h1>
       <Input passInput={handleCreateTask} />
       <div id="under-input">
+        <Api/>
         {moreThanOneTask && (
           <p>{tasksLeft} task left</p>
         )}
