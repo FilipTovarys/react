@@ -36,7 +36,8 @@ function postRequest(newTask) {
       }
     })
     .then(data => {
-      console.log(data);
+      const id = data.id
+      console.log("Id vloženého objektu:",id);
     })
     .catch(error => {
       console.error(error);
