@@ -4,12 +4,13 @@ import Task from "./components/Task.js";
 import "./App.css";
 import Input from "./components/Input.js";
 import useLocalStorage from "./components/useLocalStorage.js";
-import Api from "./components/api.js";
+import { postRequest, deleteRequest } from "./components/api.js";
+
 
 const getNextId = makeCounter()
 
 export default function App() {
-  const [tasks , setTasks] = useLocalStorage("tasks", [])
+  const [tasks , setTasks] = useLocalStorage("tasks", []);
   const [showOnlyDone, setShowOnlyDone] = useState(true);
   const [doneFilterButt, setDoneFilterButt] = useState(true);
   const tasksLeft = (tasks.filter((task) => task.completed === false)).length
@@ -21,6 +22,7 @@ export default function App() {
 
   function deleteAllTasks() {
     setTasks([]);
+    deleteRequest()
   }
 
   useEffect(() => {
@@ -29,8 +31,10 @@ export default function App() {
 
   function handleCreateTask(input) {
     const newTask = {id: getNextId(), order: 0, text: input, completed: false}
-    const updatedTask = [newTask, ...tasks].map((task, i) => ({...task, order: i}))
-    setTasks(updatedTask);
+    const updatedTasks = [newTask, ...tasks].map((task, i) => ({...task, order: i}))
+    setTasks(updatedTasks);
+    console.log(input)
+    postRequest(input)
   }
 
   function completedFilter() {
@@ -89,7 +93,6 @@ export default function App() {
       <h1 className="text-3xl font-bold underline">To-do list</h1>
       <Input passInput={handleCreateTask} />
       <div id="under-input">
-        <Api/>
         {moreThanOneTask && (
           <p>{tasksLeft} task left</p>
         )}

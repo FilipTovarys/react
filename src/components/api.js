@@ -1,26 +1,48 @@
-function Api() {
+const source = "https://todo.pohy.eu"
 
-    const apiRoot = 'https://todo.pohy.eu';
-
-    // Provádění GET požadavku
-    fetch(apiRoot)
+function deleteRequest() {
+  fetch(source, {
+    method: 'DELETE'
+  })
     .then(response => {
-        if (!response.ok) {
-        throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => {
-        // Úspěšná odpověď
-        console.log('GET Request Successful');
-        console.log('Response Data:', data);
+      if (response.ok) {
+        console.log('Smazáno úspěšně.');
+      } else {
+        throw new Error('Chyba v DELETE požadavku');
+      }
     })
     .catch(error => {
-        // Chyba
-        console.error('GET Request Failed', error);
+      console.error(error);
+    });
+}
+
+
+function postRequest(newTask) {
+  const postData = { title: newTask }
+
+  fetch(source, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(postData)
+  })
+    .then(response => {
+      if (response.ok) {
+        console.log('POST požadavek byl úspěšný.');
+        return response.json()
+      } else {
+        console.error('Chyba při POST požadavku.');
+      }
+    })
+    .then(data => {
+      console.log(data);
+    })
+    .catch(error => {
+      console.error(error);
     });
 }
 
 
 
-export default Api
+export {postRequest, deleteRequest}

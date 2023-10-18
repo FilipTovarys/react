@@ -10,19 +10,14 @@ function useLocalStorage(key, initialValue) {
         console.error(error)
         return initialValue
       }
-      
   });
 
-  const setValue = useCallback(
-    (value) => {
-      try {
+  const setValue = useCallback((value) => {
         localStorage.setItem(key, JSON.stringify(value));
         setStoredValue(value)
-      } catch (error) {
-        console.error(error)
-      }
     },[key])
 
+  
   return [storedValue, setValue]  
 }
 
