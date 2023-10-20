@@ -4,10 +4,10 @@ import Task from "./components/Task.js";
 import "./App.css";
 import Input from "./components/Input.js";
 import useLocalStorage from "./components/useLocalStorage.js";
-import { postRequest, deleteRequest } from "./components/api.js";
+import { postRequest, deleteAllRequest, deleteTaskRequest, updateTaskRequest } from "./components/api.js";
 
 
-const getNextId = makeCounter()
+//const getNextId = makeCounter()
 
 export default function App() {
   const [tasks , setTasks] = useLocalStorage("tasks", []);
@@ -22,7 +22,7 @@ export default function App() {
 
   function deleteAllTasks() {
     setTasks([]);
-    deleteRequest()
+    deleteAllRequest()
   }
 
   useEffect(() => {
@@ -30,11 +30,14 @@ export default function App() {
   })
 
   function handleCreateTask(input) {
-    const newTask = {id: getNextId(), order: 0, text: input, completed: false}
-    const updatedTasks = [newTask, ...tasks].map((task, i) => ({...task, order: i}))
-    setTasks(updatedTasks);
-    console.log(input)
-    postRequest(input)
+    postRequest(input).then(id => {
+      const newTask = {text: input, id: id, completed: false, order: 0}
+      const updatedTasks = [newTask, ...tasks].map((task, i) => ({...task, order: i}))
+      setTasks(updatedTasks);
+    })
+    .catch(error => {
+      console.error("Chyba:", error);
+    });
   }
 
   function completedFilter() {
@@ -55,9 +58,11 @@ export default function App() {
       return task
     })
     setTasks(updatedTasks)
+    updateTaskRequest(updatedTask)
   }
 
   function handleTaskDelete(id) {
+    deleteTaskRequest(id)
     const updatedTask = tasks.filter((task) => task.id !== id);
     setTasks(updatedTask);
   }
@@ -125,8 +130,8 @@ export default function App() {
   );  
 }
 
-function makeCounter() {
-  let count = 0
-  return () => {count ++
-    return count}
-}
+// function makeCounter() {
+//   let count = 0
+//   return () => {count ++
+//     return count}
+// }

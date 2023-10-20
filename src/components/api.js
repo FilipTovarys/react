@@ -1,6 +1,6 @@
 const source = "https://todo.pohy.eu"
 
-function deleteRequest() {
+function deleteAllRequest() {
   fetch(source, {
     method: 'DELETE'
   })
@@ -20,7 +20,7 @@ function deleteRequest() {
 function postRequest(newTask) {
   const postData = { title: newTask }
 
-  fetch(source, {
+  return fetch(source, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -37,7 +37,7 @@ function postRequest(newTask) {
     })
     .then(data => {
       const id = data.id
-      console.log("Id vloženého objektu:",id);
+      return id; 
     })
     .catch(error => {
       console.error(error);
@@ -45,5 +45,52 @@ function postRequest(newTask) {
 }
 
 
+function deleteTaskRequest(id) {
+  const apiUrl = "https://todo.pohy.eu/" + id;
 
-export {postRequest, deleteRequest}
+  fetch(apiUrl, {
+    method: 'DELETE',
+  })
+    .then(response => {
+      if (response.ok) {
+        console.log('Objekt byl úspěšně smazán.');
+      } else {
+        console.error('Chyba při mazání objektu.');
+      }
+    })
+    .catch(error => {
+      console.error('Chyba při provádění DELETE požadavku:', error);
+    });
+}
+
+
+function updateTaskRequest(updatedTask) {
+  const apiUrl = "https://todo.pohy.eu/" + updatedTask.id;
+
+  const updateData = {
+    text: updatedTask.text,
+    completed: updatedTask.completed,
+  };
+
+  fetch(apiUrl, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(updateData),
+  })
+    .then(response => {
+      if (response.ok) {
+        console.log('Objekt byl úspěšně aktualizován.');
+        return response.json(); 
+      } else {
+        throw new Error('Chyba při aktualizaci objektu.');
+      }
+    })
+    .catch(error => {
+      console.error('Chyba při provádění PUT nebo PATCH požadavku:', error);
+    });
+}
+
+
+export {postRequest, deleteAllRequest, deleteTaskRequest, updateTaskRequest}
