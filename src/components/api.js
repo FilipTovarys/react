@@ -65,7 +65,7 @@ function updateTaskRequest(updatedTask) {
   const apiUrl = "https://todo.pohy.eu/" + updatedTask.id;
 
   const updateData = {
-    text: updatedTask.text,
+    title: updatedTask.text,
     completed: updatedTask.completed,
   };
 
