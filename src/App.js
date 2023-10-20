@@ -109,8 +109,9 @@ export default function App() {
         <div>
           {tasks
             .sort((a, b) => a.order - b.order)
+            .filter((onetask) => showOnlyDone || onetask.completed)
             .map((onetask) => {
-              return showOnlyDone || onetask.completed ? (
+              return (
                 <Task
                   key={onetask.id}
                   task={onetask}
@@ -118,7 +119,7 @@ export default function App() {
                   onDelete={handleTaskDelete}
                   move={moveTask}
                 ></Task>
-              ) : null;
+              );
             })}
         </div>
         <div id="filters">
