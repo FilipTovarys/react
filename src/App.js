@@ -5,6 +5,7 @@ import "./App.css";
 import Input from "./components/Input.js";
 import useLocalStorage from "./components/useLocalStorage.js";
 import {
+  getRequest,
   postRequest,
   deleteAllRequest,
   deleteTaskRequest,
@@ -55,7 +56,7 @@ export default function App() {
   function deleteDoneTasks() {
     let updatedTasks = tasks.filter((task) => task.completed === false);
     setTasks(updatedTasks);
-    
+    getRequest();
   }
 
   function handleTaskUpdate(updatedTask) {
@@ -160,8 +161,10 @@ export default function App() {
 //     return count}
 // }
 
-let pole = [{name: "Aneta", ill: true}, {name: "Filip", ill: false}]
+let pole = [
+  { name: "Aneta", ill: true },
+  { name: "Filip", ill: false },
+];
 
-
-const newPole = pole.filter((person) => person.name === "Filip")
-console.log(newPole)
+const newPole = pole.filter((person) => person.name === "Filip");
+console.log(newPole);

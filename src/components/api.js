@@ -1,5 +1,27 @@
 const source = "https://todo.pohy.eu";
 
+function getRequest() {
+  fetch(source, {
+    method: "GET",
+  })
+    .then((response) => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error("Nepodařilo se načíst data.");
+      }
+    })
+    .then((data) => {
+      console.log("Dat, kde vyfiltruju completed === true:", data);
+      const onlyCompletedTasks = data.filter((task) => task.completed === true);
+      const onlyCompletedTasksIds = onlyCompletedTasks.map((task) => task.id);
+      console.log("only completed", onlyCompletedTasksIds);
+    })
+    .catch((error) => {
+      console.error("Chyba:", error);
+    });
+}
+
 function deleteAllRequest() {
   fetch(source, {
     method: "DELETE",
@@ -89,4 +111,10 @@ function updateTaskRequest(updatedTask) {
     });
 }
 
-export { postRequest, deleteAllRequest, deleteTaskRequest, updateTaskRequest };
+export {
+  getRequest,
+  postRequest,
+  deleteAllRequest,
+  deleteTaskRequest,
+  updateTaskRequest,
+};
