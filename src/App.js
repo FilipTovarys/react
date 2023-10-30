@@ -6,6 +6,7 @@ import Input from "./components/Input.js";
 import useLocalStorage from "./components/useLocalStorage.js";
 import {
   getRequest,
+  deleteByIdsArray,
   postRequest,
   deleteAllRequest,
   deleteTaskRequest,
@@ -56,7 +57,13 @@ export default function App() {
   function deleteDoneTasks() {
     let updatedTasks = tasks.filter((task) => task.completed === false);
     setTasks(updatedTasks);
-    getRequest();
+    getRequest()
+      .then((onlyCompletedTasksIds) => {
+        deleteByIdsArray(onlyCompletedTasksIds);
+      })
+      .catch((error) => {
+        console.error("Chyba při získávání dat:", error);
+      });
   }
 
   function handleTaskUpdate(updatedTask) {

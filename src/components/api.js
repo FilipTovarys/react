@@ -1,7 +1,7 @@
 const source = "https://todo.pohy.eu";
 
 function getRequest() {
-  fetch(source, {
+  return fetch(source, {
     method: "GET",
   })
     .then((response) => {
@@ -12,14 +12,37 @@ function getRequest() {
       }
     })
     .then((data) => {
-      console.log("Dat, kde vyfiltruju completed === true:", data);
       const onlyCompletedTasks = data.filter((task) => task.completed === true);
       const onlyCompletedTasksIds = onlyCompletedTasks.map((task) => task.id);
-      console.log("only completed", onlyCompletedTasksIds);
+      return onlyCompletedTasksIds;
     })
     .catch((error) => {
       console.error("Chyba:", error);
+      throw error; 
     });
+}
+
+function deleteByIdsArray(idsToDelete) {
+  idsToDelete.forEach((id) => {
+    fetch("https://todo.pohy.eu/" + id, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log(`Objekt s ID ${id} byl úspěšně smazán.`);
+        } else {
+          console.error(`Chyba při DELETE požadavku pro objekt s ID ${id}.`);
+        }
+      })
+      .catch((error) => {
+        console.error(
+          `Chyba při provádění DELETE požadavku pro objekt s ID ${id}: ${error}`
+        );
+      });
+  });
 }
 
 function deleteAllRequest() {
@@ -113,6 +136,7 @@ function updateTaskRequest(updatedTask) {
 
 export {
   getRequest,
+  deleteByIdsArray,
   postRequest,
   deleteAllRequest,
   deleteTaskRequest,
